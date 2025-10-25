@@ -1,0 +1,41 @@
+# -----------------------------
+# Line endings
+# -----------------------------
+# Normalize all text files to LF in repo, auto-convert on checkout
+* text=auto eol=lf
+
+# -----------------------------
+# Python
+# -----------------------------
+*.py text
+*.pyi text
+*.toml text
+*.md text
+*.yml text
+*.yaml text
+*.json text
+*.sh text eol=lf
+
+# -----------------------------
+# Data / binaries
+# -----------------------------
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.ipynb text
+*.csv text
+*.dat text
+
+# -----------------------------
+# GitHub / linguist hints
+# -----------------------------
+# Mark test files as non-core code for language stats
+tests/* linguist-documentation=true
+docs/* linguist-documentation=true
+
+# -----------------------------
+# Misc
+# -----------------------------
+*.bat text eol=crlf

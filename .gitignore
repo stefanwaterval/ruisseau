@@ -1,0 +1,105 @@
+# -----------------------------
+# Python
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.pyd
+*.pyo
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+MANIFEST
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+.env
+.venv
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+*.hypothesis/
+.pytest_cache/
+.pyre/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Ruff cache
+.ruff_cache/
+
+# Pyright / Pylance
+typings/
+
+# Hatch / Poetry / Pipenv metadata
+.hatch/
+poetry.lock
+Pipfile
+Pipfile.lock
+
+# -----------------------------
+# Project specific
+# -----------------------------
+runs/
+logs/
+artifacts/
+overview.md
+
+# -----------------------------
+# VS Code & IDEs
+# -----------------------------
+.vscode/
+.history/
+.idea/
+*.code-workspace
+
+# -----------------------------
+# macOS
+# -----------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+# Thumbnails
+._*
+# Files that might appear in volumes
+.Spotlight-V100
+.Trashes
+# Mac-specific metadata
+ehthumbs.db
+Thumbs.db
+
+# -----------------------------
+# Docker
+# -----------------------------
+*.pid
+*.log
+*.bak
+*.tmp
+*.swp

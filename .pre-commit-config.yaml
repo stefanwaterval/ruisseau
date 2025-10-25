@@ -1,0 +1,27 @@
+repos:
+  # Ruff: linter + formatter + import sorting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.4
+    hooks:
+      - id: ruff
+        name: Ruff Linter
+        args: [--fix] # auto-fix lint issues (incl. import sort)
+      - id: ruff-format
+        name: Ruff Formatter
+
+  # Mypy: static type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.2
+    hooks:
+      - id: mypy
+        args: [--ignore-missing-imports, --install-types, --non-interactive]
+
+  # General hygiene hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
