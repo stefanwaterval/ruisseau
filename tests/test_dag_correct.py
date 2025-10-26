@@ -43,7 +43,7 @@ def test_topo_multiple_roots():
     task2 = Task(id="B")
     task3 = Task(id="C", deps=("A", "B"))
 
-    dag = DAG("multi_roots", tasks=[task1, task2, task3])
+    dag = DAG("multi_roots_dag", tasks=[task1, task2, task3])
     order = dag.topological_order()
 
     assert set(order) == {"A", "B", "C"}
