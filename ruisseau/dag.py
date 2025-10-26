@@ -53,7 +53,7 @@ class DAG:
                 self.graph[dep].append(task.id)
             self.graph.setdefault(task.id, [])
 
-    def tasks_by_id(self) -> dict:
+    def tasks_by_id(self) -> dict[str, Task]:
         return self.index
 
     def topological_order(self) -> List[str]:
