@@ -76,3 +76,7 @@ class DAG:
             raise CycleError("Cycle error: The Kahn's algorithm detected a cycle.")
 
         return sorted_order
+
+    def validate(self) -> None:
+        self.topological_order()
+        return
