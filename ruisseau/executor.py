@@ -13,8 +13,6 @@ class LocalExecutor:
 
         for task_id in order:
             spec = runnables.get(task_id)
-            if spec is None:
-                raise KeyError(f"No runnable for task '{task_id}'")
 
             func: Callable
             args: tuple
