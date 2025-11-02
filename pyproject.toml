@@ -16,6 +16,9 @@ license = { text = "MIT" }
 authors = [{ name = "Stefan Waterval", email = "deagle74@example.com" }]
 dependencies = []
 
+[project.scripts]
+ruisseau = "ruisseau.cli:main"
+
 [tool.hatch.build.targets.wheel]
 # Package lives in ruisseau/ruisseau/, not under src/
 packages = ["ruisseau"]
