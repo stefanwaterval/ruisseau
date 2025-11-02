@@ -11,4 +11,4 @@ COPY . .
 
 RUN pip install --no-cache-dir .
 
-ENTRYPOINT ["python", "-m", "ruisseau.cli"]
+ENTRYPOINT ["ruisseau"]
