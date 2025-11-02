@@ -40,7 +40,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             print(f"Validation failed: {e}", file=sys.stderr)
             return 1
 
-        print(f"DAG in {args.path} successfully loaded and validated!")
+        if not args.quiet:
+            print(f"DAG in {args.path} successfully loaded and validated!")
         return 0
 
     print("ruisseau validate <path> [--quiet] [--format {auto,yaml,py}]")
