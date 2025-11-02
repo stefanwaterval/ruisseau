@@ -33,6 +33,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "validate":
+        try:
+            dag = load_dag_from_python(args.path)
+            dag.validate()
+        except Exception as e:
+            print(f"Validation failed: {e}", file=sys.stderr)
+            return 1
+
+        print(f"DAG in {args.path} sucessfully loaded and validated!")
         return 0
 
     print("ruisseau validate <path> [--quiet] [--format {auto,yaml,py}]")
@@ -67,3 +75,7 @@ def load_dag_from_python(path: str | Path) -> DAG:
         raise TypeError(f"{dag} is not of type DAG")
 
     return dag
+
+
+if __name__ == "__main__":
+    sys.exit(main())
