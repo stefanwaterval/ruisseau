@@ -31,12 +31,14 @@ class DAGResult:
             raise ValueError("Invalid DAG name: cannot be empty")
 
         overall = "pass"
-        for k, v in self.tasks.items():
-            if not isinstance(k, str) or not k:
+        for id, task_result in self.tasks.items():
+            if not isinstance(id, str) or not id:
                 raise TypeError("Task id keys must be non-empty strings")
-            if not isinstance(v, TaskResult):
-                raise TypeError(f"Task result for '{k}' must be a TaskResult.")
-            if v.status == "fail":
+            if not isinstance(task_result, TaskResult):
+                raise TypeError(
+                    f"Task result for '{task_result}' must be a TaskResult."
+                )
+            if task_result.status == "fail":
                 overall = "fail"
                 break
 
