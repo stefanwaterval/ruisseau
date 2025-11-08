@@ -20,7 +20,7 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("path")
     validate_parser.add_argument("--quiet", action="store_true", default=False)
     validate_parser.add_argument(
-        "--format", choices=["auto", "yaml", "py"], default="auto"
+        "--format", choices=["auto", "yaml", "yml", "py"], default="auto"
     )
     validate_parser.set_defaults(command="validate")
 
@@ -36,6 +36,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if args.command == "validate":
         try:
             path = resolve_input_file(args.path)
+            resolve_file_suffix(path, args.format)
             dag = load_dag_from_python(path)
             dag.validate()
         except (
@@ -44,6 +45,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             PermissionError,
             TypeError,
             ValueError,
+            AttributeError,
         ) as e:
             print(f"Input error\n{e}", file=sys.stderr)
             return 2
@@ -59,6 +61,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 def resolve_input_file(path: str) -> Path:
     return ensure_readable_file(path)
+
+
+def resolve_file_suffix(path: Path, format: str) -> None:
+    if format == "py":
+        if not path.suffix == ".py":
+            raise ValueError(f"Format {format} requires .py file")
+    if format in ["yaml", "yml"]:
+        raise ValueError("YAML not yet supported")
+    if format == "auto":
+        if not path.suffix == ".py":
+            raise ValueError("Only .py files accepted")
 
 
 def load_dag_from_python(path: Path) -> DAG:
