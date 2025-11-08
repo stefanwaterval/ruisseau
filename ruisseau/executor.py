@@ -1,16 +1,18 @@
 from typing import Callable
 
 from .dag import DAG
+from .results import DAGResult, TaskResult
 
 
 class LocalExecutor:
     def __init__(self) -> None:
         pass
 
-    def execute(self, dag: DAG, runnables: dict) -> dict[str, str]:
-        order = dag.topological_order()
-        summary: dict[str, str] = {}
+    def execute(self, dag: DAG, runnables: dict) -> DAGResult:
+        dag_name: str = dag.name
+        order: list[str] = dag.topological_order()
 
+        results: list[TaskResult] = []
         for task_id in order:
             spec = runnables.get(task_id)
 
@@ -38,11 +40,9 @@ class LocalExecutor:
 
             try:
                 func(*args, **kwargs)
-                summary[task_id] = "pass"
+                results.append(TaskResult(task_id, "pass"))
             except Exception:
-                summary[task_id] = "fail"
-                summary["overall"] = "fail"
-                return summary
+                results.append(TaskResult(task_id, "fail"))
+                return DAGResult(dag_name, results)
 
-        summary["overall"] = "pass"
-        return summary
+        return DAGResult(dag_name, results)
