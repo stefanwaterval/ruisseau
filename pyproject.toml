@@ -44,6 +44,7 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 strict_optional = true
 ignore_missing_imports = true
+exclude = "tests"
 
 # -----------------------------
 # Pytest configuration
