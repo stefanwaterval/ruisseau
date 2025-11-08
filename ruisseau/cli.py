@@ -38,7 +38,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             path = resolve_input_file(args.path)
             dag = load_dag_from_python(path)
             dag.validate()
-        except (FileNotFoundError, IsADirectoryError, PermissionError, TypeError) as e:
+        except (
+            FileNotFoundError,
+            IsADirectoryError,
+            PermissionError,
+            TypeError,
+            ValueError,
+        ) as e:
             print(f"Invalid input: {e}", file=sys.stderr)
             return 2
         except Exception as e:
