@@ -45,10 +45,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             TypeError,
             ValueError,
         ) as e:
-            print(f"Invalid input: {e}", file=sys.stderr)
+            print(f"Input error\n{e}", file=sys.stderr)
             return 2
         except Exception as e:
-            print(f"Validation failed: {e}", file=sys.stderr)
+            print(f"Validation failed\n{e}", file=sys.stderr)
             return 1
 
         if not args.quiet:
