@@ -23,7 +23,7 @@ class DAGResult:
     """Immutable descriptor for the outcome of one DAG execution."""
 
     name: str
-    tasks: dict[str, TaskResult]
+    results: list[TaskResult]
     overall: str = field(init=False)
 
     def __post_init__(self):
@@ -31,9 +31,7 @@ class DAGResult:
             raise ValueError("Invalid DAG name: cannot be empty")
 
         overall = "pass"
-        for id, task_result in self.tasks.items():
-            if not isinstance(id, str) or not id:
-                raise TypeError("Task id keys must be non-empty strings")
+        for task_result in self.results:
             if not isinstance(task_result, TaskResult):
                 raise TypeError(
                     f"Task result for '{task_result}' must be a TaskResult."
