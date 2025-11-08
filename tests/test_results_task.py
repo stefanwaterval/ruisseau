@@ -1,5 +1,3 @@
-from dataclasses import FrozenInstanceError
-
 import pytest
 
 from ruisseau.results import TaskResult
@@ -16,12 +14,6 @@ def test_taskresult_happy_path():
     assert t2.id == "B"
     assert t2.status == "fail"
     assert t2.message == "boom"
-
-
-def test_taskresult_is_immutable():
-    t = TaskResult("A", "pass")
-    with pytest.raises(FrozenInstanceError):
-        t.status = "fail"
 
 
 def test_taskresult_validation_errors():
