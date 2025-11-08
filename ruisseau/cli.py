@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Optional, Sequence
 
 from .dag import DAG
+from .io.paths import ensure_readable_file
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -34,8 +35,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     if args.command == "validate":
         try:
-            dag = load_dag_from_python(args.path)
+            path = resolve_input_file(args.path)
+            dag = load_dag_from_python(path)
             dag.validate()
+        except (FileNotFoundError, IsADirectoryError, PermissionError, TypeError) as e:
+            print(f"Invalid input: {e}", file=sys.stderr)
+            return 2
         except Exception as e:
             print(f"Validation failed: {e}", file=sys.stderr)
             return 1
@@ -46,14 +51,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     return 0
 
 
-def load_dag_from_python(path: str | Path) -> DAG:
-    if isinstance(path, str):
-        path = Path(path)
+def resolve_input_file(path: str) -> Path:
+    return ensure_readable_file(path)
 
+
+def load_dag_from_python(path: Path) -> DAG:
     module_name = path.stem
-
-    if not path.exists():
-        raise FileNotFoundError(f"Invalid path: cannot find {path}.")
 
     if not path.suffix == ".py":
         raise ValueError(f"Invalid extension: {path} should be a python file.")
