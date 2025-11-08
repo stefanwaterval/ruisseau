@@ -20,7 +20,7 @@ def ensure_readable_file(path: str | Path) -> Path:
 
     if not os.access(path, os.R_OK):
         raise PermissionError(
-            f"Invalide mode: {path} cannot be read, please insure reading mode."
+            f"Invalid permissions: {path} is not readable. Adjust file permissions and try again."
         )
 
     return path
