@@ -2,6 +2,7 @@ import pytest
 
 from ruisseau.dag import DAG
 from ruisseau.executor import LocalExecutor
+from ruisseau.results import DAGResult
 from ruisseau.task import Task
 
 
@@ -24,12 +25,24 @@ def combine(a, b=0):
 
 
 def test_all_success_callable():
-    dag = DAG(name="some dag", tasks=[Task(id="A"), Task(id="B")])
+    dag = DAG(name="some dag", tasks=[Task(id="A"), Task(id="B", deps=("A",))])
     runnables = {"A": noop, "B": noop}
     executor = LocalExecutor()
 
-    summary = executor.execute(dag, runnables)
-    assert summary == {"A": "pass", "B": "pass", "overall": "pass"}
+    dag_result = executor.execute(dag, runnables)
+    assert isinstance(dag_result, DAGResult)
+    assert dag_result.name == dag.name
+    assert isinstance(dag_result.results, list)
+    assert len(dag_result.results) == 2
+    assert dag_result.overall == "pass"
+
+    result_a, result_b = dag_result.results
+    assert result_a.id == "A"
+    assert result_a.status == "pass"
+    assert result_a.message is None
+    assert result_b.id == "B"
+    assert result_b.status == "pass"
+    assert result_b.message is None
 
 
 def test_runnable_raises_exception_stops_early():
@@ -40,13 +53,12 @@ def test_runnable_raises_exception_stops_early():
     runnables = {"A": noop, "B": fail, "C": noop}
     executor = LocalExecutor()
 
-    summary = executor.execute(dag, runnables)
-
-    # should stop at B
-    assert summary["A"] == "pass"
-    assert summary["B"] == "fail"
-    assert summary["overall"] == "fail"
-    assert "C" not in summary
+    dag_result = executor.execute(dag, runnables)
+    task_results = dag_result.results
+    assert len(task_results) == 2
+    assert (task_results[0].id, task_results[0].status) == ("A", "pass")
+    assert (task_results[1].id, task_results[1].status) == ("B", "fail")
+    assert dag_result.overall == "fail"
 
 
 def test_tuple_form_two_args():
@@ -54,8 +66,10 @@ def test_tuple_form_two_args():
     runnables = {"A": (add, (1, 2))}
     executor = LocalExecutor()
 
-    summary = executor.execute(dag, runnables)
-    assert summary == {"A": "pass", "overall": "pass"}
+    dag_result = executor.execute(dag, runnables)
+    task_result = dag_result.results[0]
+    assert (task_result.id, task_result.status) == ("A", "pass")
+    assert dag_result.overall == "pass"
 
 
 def test_tuple_form_args_and_kwargs():
@@ -63,8 +77,10 @@ def test_tuple_form_args_and_kwargs():
     runnables = {"A": (combine, (1,), {"b": 2})}
     executor = LocalExecutor()
 
-    summary = executor.execute(dag, runnables)
-    assert summary == {"A": "pass", "overall": "pass"}
+    dag_result = executor.execute(dag, runnables)
+    task_result = dag_result.results[0]
+    assert (task_result.id, task_result.status) == ("A", "pass")
+    assert dag_result.overall == "pass"
 
 
 def test_invalid_tuple_length_raises_valueerror():
