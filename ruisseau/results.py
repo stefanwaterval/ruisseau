@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -56,3 +57,6 @@ class DAGResult:
                 for task_result in self.results
             ],
         )
+
+    def to_json(self, *, indent: int | None = None) -> str:
+        return json.dumps(self.to_dict(), indent=indent)
