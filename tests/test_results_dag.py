@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from ruisseau.results import DAGResult, TaskResult
@@ -30,7 +32,7 @@ def test_dagresult_validation_errors():
         DAGResult("", [TaskResult("A", "pass")])
 
 
-def test_daresult_to_dict():
+def test_dagresult_to_dict():
     tasks = [
         TaskResult("A", "pass"),
         TaskResult("B", "fail", "boom"),
@@ -45,3 +47,12 @@ def test_daresult_to_dict():
             {"id": "B", "status": "fail", "message": "boom"},
         ],
     }
+
+
+def test_dagresult_to_json():
+    tasks = [
+        TaskResult("A", "pass"),
+        TaskResult("B", "fail", "boom"),
+    ]
+    dr = DAGResult("MyDAG", tasks)
+    assert json.loads(dr.to_json()) == dr.to_dict()
