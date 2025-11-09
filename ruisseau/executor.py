@@ -41,8 +41,8 @@ class LocalExecutor:
             try:
                 func(*args, **kwargs)
                 results.append(TaskResult(task_id, "pass"))
-            except Exception:
-                results.append(TaskResult(task_id, "fail"))
+            except Exception as e:
+                results.append(TaskResult(task_id, "fail", f"{e}"))
                 return DAGResult(dag_name, results)
 
         return DAGResult(dag_name, results)
