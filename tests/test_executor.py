@@ -57,7 +57,11 @@ def test_runnable_raises_exception_stops_early():
     task_results = dag_result.results
     assert len(task_results) == 2
     assert (task_results[0].id, task_results[0].status) == ("A", "pass")
-    assert (task_results[1].id, task_results[1].status) == ("B", "fail")
+    assert (task_results[1].id, task_results[1].status, task_results[1].message) == (
+        "B",
+        "fail",
+        "boom",
+    )
     assert dag_result.overall == "fail"
 
 
