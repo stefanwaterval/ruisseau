@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -41,3 +42,17 @@ class DAGResult:
                 break
 
         object.__setattr__(self, "overall", overall)
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(
+            name=self.name,
+            overall=self.overall,
+            results=[
+                dict(
+                    id=task_result.id,
+                    status=task_result.status,
+                    message=task_result.message,
+                )
+                for task_result in self.results
+            ],
+        )
