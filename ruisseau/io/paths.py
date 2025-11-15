@@ -1,8 +1,10 @@
 import importlib.util
 import os
+from collections.abc import Mapping
 from pathlib import Path
 
 from ruisseau.dag import DAG
+from ruisseau.executor import RunnableSpec
 
 
 def ensure_readable_file(path: str | Path) -> Path:
@@ -59,3 +61,29 @@ def load_dag_from_python(path: Path) -> DAG:
         raise TypeError(f"{dag} is not of type DAG")
 
     return dag
+
+
+def load_runnables_from_python(path: Path) -> Mapping[str, RunnableSpec]:
+    module_name = path.stem
+
+    if not path.suffix == ".py":
+        raise ValueError(f"Invalid extension: {path} should be a python file.")
+
+    spec = importlib.util.spec_from_file_location(name=module_name, location=path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load module {module_name!r} from {path}")
+
+    module = importlib.util.module_from_spec(spec=spec)
+    spec.loader.exec_module(module)
+
+    if not hasattr(module, "runnables"):
+        raise AttributeError(
+            f"{module_name!r} does not define a top-level 'runnables'."
+        )
+
+    runnables = module.runnables
+
+    if not isinstance(runnables, Mapping):
+        raise TypeError(f"{runnables} must be a mapping of task ids to runnable specs.")
+
+    return runnables
