@@ -6,7 +6,7 @@ def test_validate_success_returns_zero(capsys):
     out, err = capsys.readouterr()
 
     assert rc == 0
-    assert "successfully loaded and validated" in out
+    assert "DAG loaded and validated" in out
     assert err == ""
 
 
