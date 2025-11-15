@@ -19,6 +19,12 @@ class TaskResult:
         if self.status not in ["pass", "fail"]:
             raise ValueError(f"Invalid status {self.status}: should be pass or fail")
 
+    def __repr__(self):
+        if self.message is None:
+            return f"TaskResult(id={self.id}, status={self.status})"
+        else:
+            return f"TaskResult(id={self.id}, status={self.status}, message={True})"
+
 
 @dataclass(frozen=True)
 class DAGResult:
@@ -43,6 +49,9 @@ class DAGResult:
                 break
 
         object.__setattr__(self, "overall", overall)
+
+    def __repr__(self):
+        return f"DAGResult(name={self.name}, overall={self.overall}, results={len(self.results)})"
 
     def to_dict(self) -> dict[str, Any]:
         return dict(
