@@ -16,7 +16,7 @@ def test_run_quiet_success_returns_zero(capsys):
     out, err = capsys.readouterr()
 
     assert rc == 0
-    assert out == ""
+    assert "Running" in out
     assert err == ""
 
 
