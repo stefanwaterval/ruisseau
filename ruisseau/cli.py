@@ -13,6 +13,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("-V", "--version", action="version", version="%(prog)s 0.1.0")
 
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    # validate
     validate_parser = subparsers.add_parser("validate")
     validate_parser.add_argument("path")
     validate_parser.add_argument("--quiet", action="store_true", default=False)
@@ -20,6 +22,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--format", choices=["auto", "yaml", "yml", "py"], default="auto"
     )
     validate_parser.set_defaults(command="validate")
+
+    # run
+    run_parser = subparsers.add_parser("run")
+    run_parser.add_argument("path")
+    run_parser.add_argument("--quiet", action="store_true", default=False)
+    run_parser.add_argument(
+        "--format", choices=["auto", "yaml", "yml", "py"], default="auto"
+    )
+    run_parser.set_defaults(command="run")
 
     return parser
 
@@ -52,6 +63,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
         if not args.quiet:
             print(f"DAG in {args.path} successfully loaded and validated!")
+        return 0
+
+    if args.command == "run":
+        if not args.quiet:
+            print("run command not implemented yet")
         return 0
     return 0
 
