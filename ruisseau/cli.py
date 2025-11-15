@@ -37,6 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument(
         "--format", choices=["auto", "yaml", "yml", "py"], default="auto"
     )
+    run_parser.add_argument("--json", action="store_true", default=False)
     run_parser.set_defaults(command="run")
 
     return parser
@@ -88,7 +89,7 @@ def run_command(args: argparse.Namespace) -> int:
         print(f"Validation failed\n{e}", file=sys.stderr)
         return 1
 
-    if not args.quiet:
+    if not args.quiet and not args.json:
         print(f"DAG in {args.path} successfully loaded and validated! (ready to run)")
 
     executor = LocalExecutor()
@@ -101,11 +102,14 @@ def run_command(args: argparse.Namespace) -> int:
         print(f"Run failed\n{e}", file=sys.stderr)
         return 1
 
-    if not args.quiet:
+    if not args.quiet and not args.json:
         print(
             f"DAG '{dag_result.name}' finished with status: {dag_result.overall} "
             f"({len(dag_result.results)} task(s) run)"
         )
+
+    if args.json:
+        print(dag_result.to_json())
 
     return 0 if dag_result.is_success() else 1
 
