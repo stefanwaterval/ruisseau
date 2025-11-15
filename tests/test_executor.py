@@ -1,3 +1,5 @@
+# pyright: reportArgumentType=false, reportGeneralTypeIssues=false
+
 import pytest
 
 from ruisseau.dag import DAG
