@@ -1,3 +1,5 @@
+import json
+
 from ruisseau.cli import main
 
 
@@ -57,3 +59,47 @@ def test_run_failure_returns_one(tmp_path, capsys):
     assert "status: fail" in out
     assert "boom" not in out  # repr does not show message text
     assert err == ""
+
+
+def test_run_json_outputs_json(capsys):
+    rc = main(["run", "examples/example_dag.py", "--json"])
+    out, err = capsys.readouterr()
+
+    assert rc == 0
+    assert err == ""
+
+    # Last non-empty line should be the JSON payload
+    lines = [line for line in out.splitlines() if line.strip()]
+    assert lines, "Expected some output on stdout"
+    json_line = lines[-1]
+
+    # Parse JSON and check keys
+    data = json.loads(json_line)
+    assert "overall" in data
+    assert "results" in data
+
+    # No human summary messages
+    assert "successfully loaded and validated" not in out
+    assert "finished with status" not in out
+
+
+def test_run_json_overrides_quiet(capsys):
+    rc = main(["run", "examples/example_dag.py", "--json", "--quiet"])
+    out, err = capsys.readouterr()
+
+    assert rc == 0
+    assert err == ""
+
+    # Last non-empty line should be the JSON payload
+    lines = [line for line in out.splitlines() if line.strip()]
+    assert lines, "Expected some output on stdout"
+    json_line = lines[-1]
+
+    # Parse JSON and check keys
+    data = json.loads(json_line)
+    assert "overall" in data
+    assert "results" in data
+
+    # No human summary messages
+    assert "successfully loaded and validated" not in out
+    assert "finished with status" not in out
