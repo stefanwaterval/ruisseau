@@ -57,14 +57,14 @@ def validate_command(args: argparse.Namespace) -> int:
         ValueError,
         AttributeError,
     ) as e:
-        print(f"Input error\n{e}", file=sys.stderr)
+        print(f"Input error: {e}", file=sys.stderr)
         return 2
     except Exception as e:
-        print(f"Validation failed\n{e}", file=sys.stderr)
+        print(f"Validation error: {e}", file=sys.stderr)
         return 1
 
     if not args.quiet:
-        print(f"DAG in {args.path} successfully loaded and validated!")
+        print(f"DAG loaded and validated: {args.path}")
     return 0
 
 
@@ -83,23 +83,23 @@ def run_command(args: argparse.Namespace) -> int:
         ValueError,
         AttributeError,
     ) as e:
-        print(f"Input error\n{e}", file=sys.stderr)
+        print(f"Input error: {e}", file=sys.stderr)
         return 2
     except Exception as e:
-        print(f"Validation failed\n{e}", file=sys.stderr)
+        print(f"Validation error: {e}", file=sys.stderr)
         return 1
 
     if not args.quiet and not args.json:
-        print(f"DAG in {args.path} successfully loaded and validated! (ready to run)")
+        print(f"DAG loaded and validated: {args.path} (ready to run)")
 
     executor = LocalExecutor()
     try:
         dag_result = executor.execute(dag, runnables)
     except (TypeError, ValueError) as e:
-        print(f"Input error\n{e}", file=sys.stderr)
+        print(f"Input error: {e}", file=sys.stderr)
         return 2
     except Exception as e:
-        print(f"Run failed\n{e}", file=sys.stderr)
+        print(f"Run error: {e}", file=sys.stderr)
         return 1
 
     if not args.quiet and not args.json:
