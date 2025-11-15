@@ -53,6 +53,9 @@ class DAGResult:
     def __repr__(self):
         return f"DAGResult(name={self.name}, overall={self.overall}, results={len(self.results)})"
 
+    def is_success(self) -> bool:
+        return True if self.overall == "pass" else False
+
     def to_dict(self) -> dict[str, Any]:
         return dict(
             name=self.name,
