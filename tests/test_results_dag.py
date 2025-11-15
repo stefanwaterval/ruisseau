@@ -56,3 +56,19 @@ def test_dagresult_to_json():
     ]
     dr = DAGResult("MyDAG", tasks)
     assert json.loads(dr.to_json()) == dr.to_dict()
+
+
+def test_dagresult_is_success():
+    tasks_pass = [
+        TaskResult("A", "pass"),
+        TaskResult("B", "pass"),
+    ]
+    dr_pass = DAGResult("MyDAG", tasks_pass)
+    assert dr_pass.is_success()
+
+    tasks_fail = [
+        TaskResult("A", "pass"),
+        TaskResult("B", "fail", "boom"),
+    ]
+    dr_fail = DAGResult("MyDAG", tasks_fail)
+    assert not dr_fail.is_success()
