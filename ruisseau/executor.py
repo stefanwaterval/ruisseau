@@ -1,14 +1,18 @@
-from typing import Callable
+from typing import Callable, Mapping, TypeAlias
 
 from .dag import DAG
 from .results import DAGResult, TaskResult
+
+RunnableSpec: TypeAlias = (
+    Callable | tuple[Callable, tuple] | tuple[Callable, tuple, dict]
+)
 
 
 class LocalExecutor:
     def __init__(self) -> None:
         pass
 
-    def execute(self, dag: DAG, runnables: dict) -> DAGResult:
+    def execute(self, dag: DAG, runnables: Mapping[str, RunnableSpec]) -> DAGResult:
         dag_name: str = dag.name
         order: list[str] = dag.topological_order()
 
