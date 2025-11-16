@@ -20,6 +20,12 @@ __pycache__/
 .ruff_cache/
 *.pyc
 *.pyo
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+MANIFEST
 
 # OS files
 .DS_Store
@@ -32,3 +38,6 @@ tests/
 
 # Pre-commit configs and CI metadata
 .pre-commit-config.yaml
+
+# Editor
+.vscode/
