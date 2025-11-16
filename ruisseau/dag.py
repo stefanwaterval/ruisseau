@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import List
 
-from .task import Task
+from ruisseau.task import Task
 
 
 class DuplicateTaskIDError(Exception):

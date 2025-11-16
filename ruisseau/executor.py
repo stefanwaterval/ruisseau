@@ -1,7 +1,7 @@
 from typing import Callable, Mapping, TypeAlias
 
-from .dag import DAG
-from .results import DAGResult, TaskResult
+from ruisseau.dag import DAG
+from ruisseau.results import DAGResult, TaskResult
 
 RunnableSpec: TypeAlias = (
     Callable | tuple[Callable, tuple] | tuple[Callable, tuple, dict]
