@@ -2,9 +2,10 @@ name: Docker CI
 
 on:
   push:
-    branches: [develop]
+    branches: [develop, main]
   pull_request:
-    branches: [develop]
+    branches: [develop, main]
+  workflow_dispatch:
 
 jobs:
   docker:
