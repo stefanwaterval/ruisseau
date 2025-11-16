@@ -1,17 +1,18 @@
 import pytest
 
-from ruisseau.cli import build_parser
+from ruisseau.cli import build_parser, get_current_version
 
 
 def test_version(capsys):
     parser = build_parser()
+    version = get_current_version()
 
     with pytest.raises(SystemExit) as exit_info:
         parser.parse_args(["-V"])
     assert exit_info.value.code == 0
 
     out, err = capsys.readouterr()
-    assert "ruisseau 0.1.0" in out
+    assert f"ruisseau {version}" in out
     assert err == ""
 
     with pytest.raises(SystemExit) as exit_info:
@@ -19,7 +20,7 @@ def test_version(capsys):
     assert exit_info.value.code == 0
 
     out, err = capsys.readouterr()
-    assert "ruisseau 0.1.0" in out
+    assert f"ruisseau {version}" in out
     assert err == ""
 
 
