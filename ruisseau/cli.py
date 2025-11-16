@@ -1,5 +1,6 @@
 import argparse
 import sys
+from importlib.metadata import PackageNotFoundError, version
 from typing import Optional, Sequence
 
 from ruisseau.executor import LocalExecutor
@@ -16,8 +17,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ruisseau", description="Minimal DAG orchestration tool"
     )
-
-    parser.add_argument("-V", "--version", action="version", version="%(prog)s 0.1.0")
+    # version
+    current_version = get_current_version()
+    parser.add_argument(
+        "-V", "--version", action="version", version=f"%(prog)s {current_version}"
+    )
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -41,6 +45,15 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.set_defaults(command="run")
 
     return parser
+
+
+def get_current_version() -> str:
+    try:
+        current_version = version("ruisseau")
+    except PackageNotFoundError:
+        return "0.0.0"
+
+    return current_version
 
 
 def validate_command(args: argparse.Namespace) -> int:
