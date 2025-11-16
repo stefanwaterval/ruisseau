@@ -1,7 +1,7 @@
 import argparse
 import sys
 from importlib.metadata import PackageNotFoundError, version
-from typing import Optional, Sequence
+from typing import Sequence
 
 from ruisseau.executor import LocalExecutor
 
@@ -127,7 +127,7 @@ def run_command(args: argparse.Namespace) -> int:
     return 0 if dag_result.is_success() else 1
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     if argv is None:
         argv = sys.argv[1:]
     parser = build_parser()
