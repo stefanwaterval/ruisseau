@@ -1,0 +1,43 @@
+# Docker
+Dockerfile
+.dockerignore
+
+# Version control
+.git
+.github
+.gitattributes
+.gitignore
+
+# Local environments
+.venv
+env/
+venv/
+
+# Caches and build artifacts
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.pyo
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+MANIFEST
+
+# OS files
+.DS_Store
+
+# Docs and project notes not needed in container
+overview.md
+
+# Tests are not needed in runtime image
+tests/
+
+# Pre-commit configs and CI metadata
+.pre-commit-config.yaml
+
+# Editor
+.vscode/
