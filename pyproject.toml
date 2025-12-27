@@ -13,7 +13,7 @@ description = "A minimalist DAG runner for local workflows."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Stefan Waterval", email = "deagle74@example.com" }]
+authors = [{ name = "Stefan Waterval", email = "stefanwaterval@gmail.com" }]
 dependencies = []
 
 [project.scripts]
